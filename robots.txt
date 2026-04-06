@@ -1,0 +1,5 @@
+# Allow Google AdSense and other search engines to crawl the site
+User-agent: *
+Allow: /
+
+Sitemap: https://roguess.online/sitemap.xml
