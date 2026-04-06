@@ -57,8 +57,10 @@ body {
 .app-wrapper {
     display: flex;
     width: 100%;
-    height: 100vh; /* Fixed viewport height */
-    overflow: hidden; /* Prevent body scroll */
+    height: 100vh;
+    /* Fixed viewport height */
+    overflow: hidden;
+    /* Prevent body scroll */
 }
 
 .main-content {
@@ -67,7 +69,8 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow-y: auto; /* Core scroll area */
+    overflow-y: auto;
+    /* Core scroll area */
     height: 100%;
 }
 
@@ -479,7 +482,8 @@ header {
     transition: all 0.3s ease;
 }
 
-.rank-badge i, .rank-badge svg {
+.rank-badge i,
+.rank-badge svg {
     flex-shrink: 0;
 }
 
