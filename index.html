@@ -96,10 +96,15 @@
 
         <!-- Main Game Area -->
         <main class="main-content">
-            <header>
-                <div class="lang-switch">
-                    <button class="lang-btn active" onclick="setLanguage('en')">EN</button>
-                    <button class="lang-btn" onclick="setLanguage('th')">TH</button>
+            <header id="game-header">
+                <div class="top-nav-actions">
+                    <a href="about.html" class="nav-icon-btn" data-i18n-title="nav_about_title">
+                        <i data-lucide="info"></i>
+                    </a>
+                    <div class="lang-switch">
+                        <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+                        <button class="lang-btn" onclick="setLanguage('th')">TH</button>
+                    </div>
                 </div>
                 <h1 id="game-title" data-i18n="game_title">RO Monster Hunt</h1>
                 <p class="subtitle" data-i18n="game_subtitle">Track down the target monster using clues from
@@ -262,7 +267,7 @@
                     </div>
                     <div class="ad-content-box">
                         <img src="Logo.png" alt="RO Guess Logo"
-                            style="max-width: 100%; max-height: 250px; object-fit: contain; filter: drop-shadow(0 0 10px rgba(255,255,255,0.1));">
+                            style="max-width: 100%; max-height: 250px; object-fit: contain; filter: drop-shadow(0 0 0px rgba(255,255,255,0.1));">
                     </div>
                 </div>
             </div>

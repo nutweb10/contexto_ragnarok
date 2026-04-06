@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | RO Monster Hunt</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="Logo.png">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body class="midnight-theme">
+    <div class="app-wrapper">
+        <main class="main-content">
+            <header id="game-header" style="width: 100%; max-width: 800px; position: relative;">
+                <div class="top-nav-actions">
+                    <a href="index.html" class="nav-icon-btn" data-i18n-title="back_to_hunt">
+                        <i data-lucide="arrow-left"></i>
+                    </a>
+                    <div class="lang-switch">
+                        <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+                        <button class="lang-btn" onclick="setLanguage('th')">TH</button>
+                    </div>
+                </div>
+                <img src="Logo.png" alt="Logo"
+                    style="width: 80px; margin-bottom: 10px; filter: drop-shadow(0 0 15px rgba(100, 255, 218, 0.3));">
+                <h1 data-i18n="about_title">About the Project</h1>
+                <p class="subtitle" data-i18n="about_intro">Information and Support</p>
+            </header>
+
+            <div class="glass-panel"
+                style="width: 100%; max-width: 800px; margin-bottom: 24px; text-align: left; line-height: 1.6;">
+                <h2 style="color: var(--accent-primary); margin-bottom: 15px; font-size: 1.2rem;"
+                    data-i18n="about_title">Project Story</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 20px;" data-i18n="about_desc">
+                    This project is dedicated to the Ragnarok Online community, specifically those playing on Episode
+                    14.3 Hi-Class servers.
+                </p>
+            </div>
+
+            <div class="glass-panel" style="width: 100%; max-width: 800px; margin-bottom: 40px;">
+                <h2 style="color: var(--accent-primary); margin-bottom: 20px; font-size: 1.2rem;"
+                    data-i18n="support_title">Support the Hunt</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 30px; font-size: 0.9rem;"
+                    data-i18n="support_desc">
+                    Help us maintain the server and database.
+                </p>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+                    <!-- PromptPay Thailand -->
+                    <div
+                        style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; text-align: center;">
+                        <h3 style="font-size: 0.9rem; margin-bottom: 15px; color: var(--text-primary);"
+                            data-i18n="donate_thqr">PromptPay (TH)</h3>
+                        <img src="THQR.jpg" alt="PromptPay QR"
+                            style="width: 100%; max-width: 200px; border-radius: 8px; border: 4px solid white; margin-bottom: 15px;">
+                    </div>
+
+                    <!-- PayPal International -->
+                    <div
+                        style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 250px;">
+                        <h3 style="font-size: 0.9rem; margin-bottom: 15px; color: var(--text-primary);"
+                            data-i18n="donate_paypal">PayPal (Global)</h3>
+                        <a href="https://paypal.me/xorknaemz" target="_blank" class="btn btn-primary" style="width: 80%; text-decoration: none;" data-i18n="donate_paypal">
+                            Donate via PayPal
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <footer
+                style="width: 100%; max-width: 800px; margin-top: 40px; padding-bottom: 20px; text-align: center; opacity: 0.4;">
+                <p style="font-size: 0.75rem; letter-spacing: 1px; text-transform: uppercase;">
+                    © 2026 Contexto Ragnarok | Episode 14.3 Hi-Class
+                </p>
+                <div style="font-size: 0.6rem; margin-top: 10px;">
+                    <a href="privacy.html"
+                        style="color: var(--text-secondary); text-decoration: none; border-bottom: 1px solid var(--border-color);"
+                        data-i18n="privacy_link">PRIVACY POLICY</a>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <script type="module" src="script.js"></script>
+    <script>
+        // Refresh icons after translation
+        setTimeout(() => lucide.createIcons(), 500);
+    </script>
+</body>
+
+</html>

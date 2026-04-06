@@ -386,17 +386,54 @@ header {
     width: 100%;
 }
 
-.lang-switch {
+/* Header Navigation Actions */
+.top-nav-actions {
     position: absolute;
-    top: 5px;
-    right: 0;
+    top: 20px;
+    right: 20px;
     display: flex;
-    gap: 0;
-    background: rgba(0, 0, 0, 0.3);
+    align-items: center;
+    gap: 12px;
+    z-index: 100;
+}
+
+.nav-icon-btn {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--border-color);
-    border-radius: 20px;
-    padding: 2px;
-    overflow: hidden;
+    border-radius: 8px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.nav-icon-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--accent-primary);
+    border-color: var(--accent-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.nav-icon-btn i {
+    width: 18px;
+    height: 18px;
+}
+
+/* Language Switcher Adjustment */
+.lang-switch {
+    display: flex;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 3px;
+    height: 36px;
+    align-items: center;
 }
 
 .lang-btn {

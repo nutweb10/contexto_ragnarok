@@ -53,6 +53,15 @@ const translations = {
         stat_losses: "Failed Hunts",
         stat_acc: "Accuracy (Guesses/Match)",
         agency_label: "Fan-made Project",
+        nav_about_title: "About",
+        about_title: "About This Hunt",
+        about_intro: "A fan-made game inspired by monster data from Ragnarok Episode 14.3.",
+        about_desc: "A fan-made game built for fun, inspired by monster data from Ragnarok Episode 14.3. Track and guess monsters using clues from the world of Rune-Midgard.",
+        support_title: "Support the Project",
+        support_desc: "Thank you for being part of this small project. If it made you smile, your support means a lot.",
+        donate_paypal: "Donate via PayPal",
+        donate_thqr: "PromptPay (Thailand)",
+        back_to_hunt: "Back to Game",
         rank_none: "No Trace",
         rank_faint: "Faint Trail",
         rank_strong: "Strong Presence",
@@ -97,6 +106,15 @@ const translations = {
         stat_losses: "การล่าที่ล้มเหลว",
         stat_acc: "ความแม่นยำ (เดา/รอบ)",
         agency_label: "โปรเจกต์ที่สร้างโดยแฟนเกม",
+        nav_about_title: "เกี่ยวกับ",
+        about_title: "เกี่ยวกับการล่า",
+        about_intro: "เกมที่สร้างโดยแฟนเกม โดยได้รับแรงบันดาลใจจากข้อมูลมอนสเตอร์ใน Ragnarok Episode 14.3",
+        about_desc: "เกมแฟนเมดที่สร้างขึ้นเพื่อความสนุก โดยอ้างอิงข้อมูลมอนสเตอร์จาก Ragnarok Episode 14.3 ออกล่ามอนสเตอร์ด้วยการทายจากข้อมูลในโลก Rune-Midgard",
+        support_title: "สนับสนุนโปรเจกต์",
+        support_desc: "ขอบคุณที่เป็นส่วนหนึ่งของโปรเจกต์เล็กๆ นี้ หากมันทำให้คุณยิ้มได้ การสนับสนุนของคุณมีความหมายมาก",
+        donate_paypal: "สนับสนุนผ่าน PayPal",
+        donate_thqr: "พร้อมเพย์ (ประเทศไทย)",
+        back_to_hunt: "กลับไปเล่น",
         rank_none: "ไม่พบร่องรอย",
         rank_faint: "ร่องรอยจางๆ",
         rank_strong: "พบเบาะแสสำคัญ",
@@ -232,6 +250,11 @@ const inputs = {
 
 // 1. Initialize Game
 async function initGame() {
+    if (!submitBtn) {
+        // We are on a non-game page (like About)
+        updateLanguageUI();
+        return;
+    }
     try {
         const response = await fetch('data.csv');
         const csvData = await response.text();
@@ -618,16 +641,20 @@ function modalHeaderState(color, icon) {
 
 // Sidebar Functions
 function setupEventListeners() {
-    submitBtn.onclick = handleGuess;
-    resetBtn.onclick = startNewGame;
-    modalClose.onclick = startNewGame;
+    if (submitBtn) submitBtn.onclick = handleGuess;
+    if (resetBtn) resetBtn.onclick = startNewGame;
+    if (modalClose) modalClose.onclick = startNewGame;
 
-    analyzerSearch.oninput = () => refreshAnalyzerUI();
+    if (analyzerSearch) analyzerSearch.oninput = () => refreshAnalyzerUI();
     setupDropZones();
     updateLanguageUI();
 
     Object.entries(inputs).forEach(([type, input]) => {
-        const list = input.parentElement.querySelector('.autocomplete-items');
+        if (!input) return;
+        const parent = input.parentElement;
+        const list = parent ? parent.querySelector('.autocomplete-items') : null;
+        if (!list) return;
+
         input.oninput = (e) => {
             const val = e.target.value.toLowerCase();
             list.innerHTML = '';
