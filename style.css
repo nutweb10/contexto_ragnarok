@@ -652,6 +652,52 @@ header {
     color: var(--text-primary);
 }
 
+/* --- Advertising Space (v2.6) --- */
+.ad-unit-container {
+    margin-top: auto;
+    padding-top: 30px;
+    border-top: 1px dashed rgba(255, 255, 255, 0.1);
+    width: 100%;
+}
+
+.ad-spacer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.6rem;
+    color: var(--text-secondary);
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+    opacity: 0.6;
+}
+
+.ad-content-box {
+    width: 100%;
+    min-height: 250px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.ad-content-box:hover {
+    border-color: var(--accent-primary);
+    background: rgba(26, 126, 114, 0.05);
+}
+
+.ad-mock-text {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    opacity: 0.5;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
 .scanning-indicator {
     position: relative;
     padding: 10px;
