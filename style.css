@@ -378,6 +378,50 @@ header {
     border: 1px solid var(--border-color);
 }
 
+/* --- Header & Typography --- */
+header {
+    margin-bottom: 40px;
+    text-align: center;
+    position: relative;
+    width: 100%;
+}
+
+.lang-switch {
+    position: absolute;
+    top: 5px;
+    right: 0;
+    display: flex;
+    gap: 0;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 2px;
+    overflow: hidden;
+}
+
+.lang-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    padding: 4px 12px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 18px;
+    letter-spacing: 1px;
+}
+
+.lang-btn:hover {
+    color: white;
+}
+
+.lang-btn.active {
+    background: var(--accent-primary);
+    color: white;
+    box-shadow: 0 0 15px rgba(26, 126, 114, 0.4);
+}
+
 .card-score {
     width: 80px;
     text-align: center;

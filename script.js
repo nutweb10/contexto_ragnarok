@@ -21,8 +21,146 @@ const STATS_DOC = doc(db, 'gameStats', 'global');
 
 let monsterDatabase = [];
 let secretMonster = null;
-let guessHistory = [];
-let nameGuessCount = 0;
+let guessHistory = [];  // Array of past guess objects for Hunt Log
+let guesses = 0;        // Attempt counter
+let nameAttempts = 0;
+const MAX_NAME_ATTEMPTS = 3;
+let currentLang = localStorage.getItem('ro-hunt-lang') || 'en';
+
+const translations = {
+    en: {
+        game_title: "RO Monster Hunt",
+        game_subtitle: "Track down the target monster using clues from Rune-Midgard.",
+        traits_header: "Monster Traits",
+        clues_header: "Field Clues",
+        placeholder_race: "Race (e.g. Demon, Undead...)",
+        placeholder_element: "Property (e.g. Fire, Holy...)",
+        placeholder_size: "Size (Small / Medium / Large)",
+        placeholder_map: "Map Code (e.g. prt_fild01)...",
+        placeholder_item: "Possible Drop Item...",
+        placeholder_name: "Monster Name...",
+        btn_submit: "Submit Clues",
+        btn_reset: "Reset Hunt",
+        guesses_count: "Guesses: ",
+        ready_status: "Ready for Hunt",
+        log_header: "Hunt Log",
+        score_header: "Clue Score",
+        privacy_link: "PRIVACY POLICY",
+        network_header: "Adventurer Network",
+        network_subtitle: "Shared knowledge from hunters across the world",
+        stat_total: "Total Hunts",
+        stat_wins: "Successful Hunts",
+        stat_losses: "Failed Hunts",
+        stat_acc: "Accuracy (Guesses/Match)",
+        agency_label: "Fan-made Project",
+        rank_none: "No Trace",
+        rank_faint: "Faint Trail",
+        rank_strong: "Strong Presence",
+        rank_close: "Almost Found",
+        rank_found: "Target Found",
+        modal_win_title: "Target Defeated!",
+        modal_win_msg: "Well done, Adventurer. You've cleared the zone.",
+        modal_lose_title: "Target Escaped...",
+        modal_lose_msg: "You ran out of name attempts. The monster has fled deep into the woods.",
+        modal_btn: "Close",
+        logbook_title: "Monster Logbook",
+        logbook_subtitle: "Organize clues to narrow down the target.",
+        lock_title: "LOCKED",
+        lock_subtitle: "Provide clues to unlock analysis",
+        label_unclassified: "Unclassified",
+        label_possible: "Possible Targets",
+        label_ruled_out: "Ruled Out",
+        search_placeholder: "Search monsters..."
+    },
+    th: {
+        game_title: "RO Monster Hunt",
+        game_subtitle: "ตามล่ามอนสเตอร์เป้าหมายโดยใช้เบาะแสจาก Rune-Midgard",
+        traits_header: "ลักษณะมอนสเตอร์",
+        clues_header: "เบาะแสจากพื้นที่",
+        placeholder_race: "เผ่า (เช่น Demon, Undead...)",
+        placeholder_element: "ธาตุ (เช่น Fire, Holy...)",
+        placeholder_size: "ขนาด (Small / Medium / Large)",
+        placeholder_map: "รหัสแผนที่ (เช่น prt_fild01)...",
+        placeholder_item: "ไอเทมที่ดรอป...",
+        placeholder_name: "ชื่อมอนสเตอร์...",
+        btn_submit: "ส่งเบาะแส",
+        btn_reset: "เริ่มการล่าใหม่",
+        guesses_count: "จำนวนการเดา: ",
+        ready_status: "พร้อมสำหรับการล่า",
+        log_header: "บันทึกการล่า",
+        score_header: "คะแนนเบาะแส",
+        privacy_link: "นโยบายความเป็นส่วนตัว",
+        network_header: "เครือข่ายนักผจญภัย",
+        network_subtitle: "ความรู้ที่แบ่งปันจากนักล่าทั่วโลก",
+        stat_total: "การล่าทั้งหมด",
+        stat_wins: "การล่าที่สำเร็จ",
+        stat_losses: "การล่าที่ล้มเหลว",
+        stat_acc: "ความแม่นยำ (เดา/รอบ)",
+        agency_label: "โปรเจกต์ที่สร้างโดยแฟนเกม",
+        rank_none: "ไม่พบร่องรอย",
+        rank_faint: "ร่องรอยจางๆ",
+        rank_strong: "พบเบาะแสสำคัญ",
+        rank_close: "เข้าใกล้เป้าหมาย",
+        rank_found: "พบเป้าหมายแล้ว",
+        modal_win_title: "กำจัดเป้าหมายสำเร็จ!",
+        modal_win_msg: "เยี่ยมมาก นักผจญภัย คุณเคลียร์พื้นที่นี้เรียบร้อยแล้ว",
+        modal_lose_title: "เป้าหมายหนีไปได้...",
+        modal_lose_msg: "คุณใช้สิทธิ์ทายชื่อจนหมดแล้ว มอนสเตอร์หนีเข้าป่าลึกไปแล้ว",
+        modal_btn: "ปิด",
+        logbook_title: "สมุดบันทึกมอนสเตอร์",
+        logbook_subtitle: "จัดระเบียบเบาะแสเพื่อค้นหาเป้าหมาย",
+        lock_title: "ล็อคอยู่",
+        lock_subtitle: "ใส่เบาะแสก่อนเพื่อเปิดการวิเคราะห์",
+        label_unclassified: "ยังไม่จัดหมวดหมู่",
+        label_possible: "เป้าหมายที่เป็นไปได้",
+        label_ruled_out: "ตัดออกแล้ว",
+        search_placeholder: "ค้นหามอนสเตอร์..."
+    }
+};
+
+window.setLanguage = function (lang) {
+    currentLang = lang;
+    localStorage.setItem('ro-hunt-lang', lang);
+    updateLanguageUI();
+};
+
+function updateLanguageUI() {
+    const t = translations[currentLang];
+
+    // Update text content
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (t[key]) {
+            // Keep icons if present
+            const icon = el.querySelector('i');
+            if (icon) {
+                el.innerHTML = '';
+                el.appendChild(icon);
+                el.appendChild(document.createTextNode(' ' + t[key]));
+            } else {
+                if (key === 'guesses_count') {
+                    el.textContent = t[key] + guesses;
+                } else {
+                    el.textContent = t[key];
+                }
+            }
+        }
+    });
+
+    // Update placeholders
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        if (t[key]) el.placeholder = t[key];
+    });
+
+    // Update buttons active state
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent.toLowerCase() === currentLang);
+    });
+
+    // Refresh dynamic parts
+    updateRankBadge();
+}
 
 // Track verified attributes
 let attributeStatus = { race: false, property: false, size: false };
@@ -150,21 +288,20 @@ function renderServerStats() {
 
 function startNewGame() {
     secretMonster = monsterDatabase[Math.floor(Math.random() * monsterDatabase.length)];
-    // Debug: console.log("Secret Monster:", secretMonster.name);
 
     guessHistory = [];
-    nameGuessCount = 0;
+    guesses = 0;
+    nameAttempts = 0;
     historyBody.innerHTML = '';
-    currentRank.innerHTML = '<i data-lucide="crosshair"></i> Ready for Hunt';
+
+    const t = translations[currentLang];
+    currentRank.innerHTML = `<i data-lucide="crosshair"></i> ${t.ready_status}`;
     currentRank.className = "rank-badge cold";
     modalContainer.style.display = 'none';
 
-    // Reset Lock Overlay (v2.5)
-    if (analyzerLockOverlay) {
-        analyzerLockOverlay.classList.remove('hidden');
-    }
+    if (analyzerLockOverlay) analyzerLockOverlay.classList.remove('hidden');
 
-    document.getElementById('attempt-count').textContent = 'Guesses: 0';
+    document.getElementById('attempt-count').textContent = t.guesses_count + '0';
     if (nameAttemptIndicator) {
         nameAttemptIndicator.textContent = '0/3';
         nameAttemptIndicator.style.color = 'var(--text-secondary)';
@@ -334,11 +471,12 @@ function calculateSimilarity(guesses) {
 }
 
 function getRank(score) {
-    if (score >= 100) return "Target Found";
-    if (score >= 86) return "Almost Found";
-    if (score >= 61) return "Strong Presence";
-    if (score >= 20) return "Faint Trail";
-    return "No Trace";
+    const t = translations[currentLang];
+    if (score >= 100) return t.rank_found;
+    if (score >= 86) return t.rank_close;
+    if (score >= 61) return t.rank_strong;
+    if (score >= 20) return t.rank_faint;
+    return t.rank_none;
 }
 
 // 5. UI Functions
@@ -357,9 +495,9 @@ function handleGuess() {
 
     const currentNameGuess = inputs.name.value.trim().toLowerCase();
     if (currentNameGuess !== "") {
-        nameGuessCount++;
-        nameAttemptIndicator.textContent = `${nameGuessCount}/3`;
-        if (nameGuessCount >= 2) nameAttemptIndicator.style.color = 'var(--accent-danger)';
+        nameAttempts++;
+        nameAttemptIndicator.textContent = `${nameAttempts}/3`;
+        if (nameAttempts >= 2) nameAttemptIndicator.style.color = 'var(--accent-danger)';
     }
 
     const currentGuesses = {
@@ -375,6 +513,7 @@ function handleGuess() {
     const guessObj = { words: guessWords, score: result.score, rank: result.rank, hint: result.feedback };
 
     guessHistory.unshift(guessObj);
+    guesses = guessHistory.length;
     updateHistoryTable();
     updateRankBadge(result);
     updateVerifiedUI();
@@ -384,7 +523,7 @@ function handleGuess() {
     document.querySelectorAll('.autocomplete-items').forEach(el => el.style.display = 'none');
 
     if (result.score === 100) showGameOver(true);
-    else if (nameGuessCount >= 3) showGameOver(false);
+    else if (nameAttempts >= 3) showGameOver(false);
 }
 
 function updateVerifiedUI() {
@@ -402,7 +541,8 @@ function updateVerifiedUI() {
 
 function updateHistoryTable() {
     historyBody.innerHTML = '';
-    document.getElementById('attempt-count').textContent = `Guesses: ${guessHistory.length}`;
+    const t = translations[currentLang];
+    document.getElementById('attempt-count').textContent = t.guesses_count + guessHistory.length;
     guessHistory.forEach(guess => {
         const card = document.createElement('div');
         card.className = 'guess-card';
@@ -414,47 +554,53 @@ function updateHistoryTable() {
 }
 
 function updateRankBadge(result) {
+    const t = translations[currentLang];
     const classMap = {
-        "Target Found": "correct",
-        "Almost Found": "very-close",
-        "Strong Presence": "hot",
-        "Faint Trail": "warm",
-        "No Trace": "cold"
+        [t.rank_found]: "correct",
+        [t.rank_close]: "very-close",
+        [t.rank_strong]: "hot",
+        [t.rank_faint]: "warm",
+        [t.rank_none]: "cold"
     };
 
-    const rankClass = classMap[result.rank] || "cold";
-    currentRank.innerHTML = `${getRankIcon(result.rank)} <span>${result.rank}</span>`;
+    const currentScore = guessHistory.length > 0 ? guessHistory[0].score : 0;
+    const rankText = result ? result.rank : getRank(currentScore);
+    const rankClass = classMap[rankText] || "cold";
+
+    currentRank.innerHTML = `${getRankIcon(rankText)} <span>${rankText}</span>`;
     currentRank.className = `rank-badge ${rankClass}`;
     lucide.createIcons();
 }
 
 function getRankIcon(rank) {
+    const t = translations[currentLang];
     const iconSize = 'style="width: 16px; height: 16px; min-width: 16px;"';
-    switch (rank) {
-        case "Target Found": return `<i data-lucide="check-circle-2" ${iconSize}></i>`;
-        case "Almost Found": return `<i data-lucide="radar" ${iconSize}></i>`;
-        case "Strong Presence": return `<i data-lucide="flame" ${iconSize}></i>`;
-        case "Faint Trail": return `<i data-lucide="wind" ${iconSize}></i>`;
-        default: return `<i data-lucide="ghost" ${iconSize}></i>`;
-    }
+    if (rank === t.rank_found) return `<i data-lucide="check-circle-2" ${iconSize}></i>`;
+    if (rank === t.rank_close) return `<i data-lucide="radar" ${iconSize}></i>`;
+    if (rank === t.rank_strong) return `<i data-lucide="flame" ${iconSize}></i>`;
+    if (rank === t.rank_faint) return `<i data-lucide="wind" ${iconSize}></i>`;
+    return `<i data-lucide="ghost" ${iconSize}></i>`;
 }
 
 function showGameOver(isWin) {
+    const t = translations[currentLang];
     const modalTitle = document.getElementById('modal-title');
     const modalIcon = document.getElementById('modal-icon');
     const modalMessage = document.getElementById('modal-message');
 
     if (isWin) {
-        modalTitle.textContent = "Target Defeated!";
+        modalTitle.textContent = t.modal_win_title;
         modalHeaderState('var(--accent-primary)', 'party-popper');
-        modalMessage.textContent = "Well done, Adventurer.";
+        modalMessage.textContent = t.modal_win_msg;
     } else {
-        modalTitle.textContent = "Target Escaped...";
+        modalTitle.textContent = t.modal_lose_title;
         modalHeaderState('var(--accent-danger)', 'ghost');
-        modalMessage.textContent = "You ran out of name attempts.";
+        modalMessage.textContent = t.modal_lose_msg;
     }
 
-    updateServerStats(isWin, guessHistory.length);
+    modalClose.textContent = t.modal_btn;
+
+    updateServerStats(isWin, guesses);
     modalSecretName.textContent = secretMonster.name;
     const stats = `<div style="margin-top: 15px; opacity: 0.8; font-size: 1.1rem;">${secretMonster.race} • ${secretMonster.property} • ${secretMonster.size}<br><small style="color: var(--text-secondary)">Known Locations: ${secretMonster.maps.join(', ')}</small></div>`;
     document.getElementById('victory-stats-container').innerHTML = stats;
@@ -478,6 +624,7 @@ function setupEventListeners() {
 
     analyzerSearch.oninput = () => refreshAnalyzerUI();
     setupDropZones();
+    updateLanguageUI();
 
     Object.entries(inputs).forEach(([type, input]) => {
         const list = input.parentElement.querySelector('.autocomplete-items');

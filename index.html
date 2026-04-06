@@ -48,33 +48,36 @@
                 <div class="lock-content">
                     <i data-lucide="lock"
                         style="width: 32px; height: 32px; margin-bottom: 10px; color: var(--accent-danger);"></i>
-                    <p style="font-size: 0.8rem; font-weight: 800; letter-spacing: 2px;">LOCKED</p>
-                    <p style="font-size: 0.6rem; color: var(--text-secondary); margin-top: 5px;">Provide clues to unlock
-                        analysis</p>
+                    <p style="font-size: 0.8rem; font-weight: 800; letter-spacing: 2px;" data-i18n="lock_title">LOCKED
+                    </p>
+                    <p style="font-size: 0.6rem; color: var(--text-secondary); margin-top: 5px;"
+                        data-i18n="lock_subtitle">Provide clues to unlock analysis</p>
                 </div>
             </div>
 
             <!-- Sidebar Content -->
             <div class="analyzer-header">
-                <h3 class="category-label"><i data-lucide="microscope"></i> Monster Logbook</h3>
-                <p class="subtitle">Organize clues to narrow down the target.</p>
+                <h3 class="category-label" data-i18n="logbook_title"><i data-lucide="microscope"></i> Monster Logbook
+                </h3>
+                <p class="subtitle" data-i18n="logbook_subtitle">Organize clues to narrow down the target.</p>
             </div>
 
             <div class="analyzer-column">
                 <!-- Unsorted List -->
                 <div class="list-section">
                     <div class="list-title">
-                        <span>Unclassified</span>
+                        <span data-i18n="label_unclassified">Unclassified</span>
                         <span id="count-unsorted" class="attempt-pill">0</span>
                     </div>
-                    <input type="text" id="analyzer-search" placeholder="Search monsters..." class="search-box">
+                    <input type="text" id="analyzer-search" placeholder="Search monsters..."
+                        data-i18n-placeholder="search_placeholder" class="search-box">
                     <div id="list-unsorted" class="drop-zone" ondragover="event.preventDefault()"></div>
                 </div>
 
                 <!-- Maybe (Good Leads) -->
                 <div class="list-section">
                     <div class="list-title">
-                        <span style="color: var(--accent-primary)">Possible Targets</span>
+                        <span style="color: var(--accent-primary)" data-i18n="label_possible">Possible Targets</span>
                         <span id="count-maybe" class="attempt-pill">0</span>
                     </div>
                     <div id="list-maybe" class="drop-zone" ondragover="event.preventDefault()"></div>
@@ -83,7 +86,7 @@
                 <!-- Probably Not (Dismissed) -->
                 <div class="list-section">
                     <div class="list-title">
-                        <span style="color: var(--accent-danger)">Ruled Out</span>
+                        <span style="color: var(--accent-danger)" data-i18n="label_ruled_out">Ruled Out</span>
                         <span id="count-not" class="attempt-pill">0</span>
                     </div>
                     <div id="list-not" class="drop-zone" ondragover="event.preventDefault()"></div>
@@ -94,20 +97,25 @@
         <!-- Main Game Area -->
         <main class="main-content">
             <header>
-                <h1 id="game-title">RO Monster Hunt</h1>
-                <p class="subtitle">Track down the target monster using clues from Rune-Midgard.</p>
+                <div class="lang-switch">
+                    <button class="lang-btn active" onclick="setLanguage('en')">EN</button>
+                    <button class="lang-btn" onclick="setLanguage('th')">TH</button>
+                </div>
+                <h1 id="game-title" data-i18n="game_title">RO Monster Hunt</h1>
+                <p class="subtitle" data-i18n="game_subtitle">Track down the target monster using clues from
+                    Rune-Midgard.</p>
             </header>
 
             <div class="glass-panel">
                 <div class="input-grid-v2">
                     <!-- Category 1: Monster Traits (Original Order) -->
                     <div class="input-category">
-                        <div class="category-label">
+                        <div class="category-label" data-i18n="traits_header">
                             <i data-lucide="microscope"></i> Monster Traits
                         </div>
                         <div class="input-field-container" data-type="race">
                             <input type="text" id="guess-race" placeholder="Race (e.g. Demon, Undead...)"
-                                autocomplete="off">
+                                data-i18n-placeholder="placeholder_race" autocomplete="off">
                             <div class="autocomplete-items"></div>
                             <i data-lucide="check-circle" class="success-icon"></i>
                             <svg class="border-glow-svg">
@@ -116,7 +124,7 @@
                         </div>
                         <div class="input-field-container" data-type="property">
                             <input type="text" id="guess-property" placeholder="Element (e.g. Fire, Holy...)"
-                                autocomplete="off">
+                                data-i18n-placeholder="placeholder_element" autocomplete="off">
                             <div class="autocomplete-items"></div>
                             <i data-lucide="check-circle" class="success-icon"></i>
                             <svg class="border-glow-svg">
@@ -125,7 +133,7 @@
                         </div>
                         <div class="input-field-container" data-type="size">
                             <input type="text" id="guess-size" placeholder="Size (Small / Medium / Large)"
-                                autocomplete="off">
+                                data-i18n-placeholder="placeholder_size" autocomplete="off">
                             <div class="autocomplete-items"></div>
                             <i data-lucide="check-circle" class="success-icon"></i>
                             <svg class="border-glow-svg">
@@ -136,20 +144,22 @@
 
                     <!-- Category 2: Field Clues (Original Order) -->
                     <div class="input-category">
-                        <div class="category-label">
+                        <div class="category-label" data-i18n="clues_header">
                             <i data-lucide="search"></i> Field Clues
                         </div>
                         <div class="input-field-container" data-type="map">
                             <input type="text" id="guess-map" placeholder="Map Code (e.g. prt_fild01)..."
-                                autocomplete="off">
+                                data-i18n-placeholder="placeholder_map" autocomplete="off">
                             <div class="autocomplete-items"></div>
                         </div>
                         <div class="input-field-container" data-type="item">
-                            <input type="text" id="guess-item" placeholder="Possible Drop Item..." autocomplete="off">
+                            <input type="text" id="guess-item" placeholder="Possible Drop Item..."
+                                data-i18n-placeholder="placeholder_item" autocomplete="off">
                             <div class="autocomplete-items"></div>
                         </div>
                         <div class="input-field-container" data-type="name">
-                            <input type="text" id="guess-name" placeholder="Monster Name..." autocomplete="off">
+                            <input type="text" id="guess-name" placeholder="Monster Name..."
+                                data-i18n-placeholder="placeholder_name" autocomplete="off">
                             <span id="name-attempt-indicator" class="attempt-indicator">0/3</span>
                             <div class="autocomplete-items"></div>
                         </div>
@@ -158,18 +168,18 @@
 
                 <!-- Submit & Status Controls (Original Layout) -->
                 <div class="action-row">
-                    <button id="submit-btn" class="btn btn-primary">
+                    <button id="submit-btn" class="btn btn-primary" data-i18n="btn_submit">
                         <i data-lucide="zap"></i> Submit Clues
                     </button>
-                    <div id="attempt-count" class="attempt-pill">Guesses: 0</div>
+                    <div id="attempt-count" class="attempt-pill" data-i18n="guesses_count">Guesses: 0</div>
                 </div>
 
                 <div class="action-row"
                     style="margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 20px;">
-                    <button id="reset-btn" class="btn btn-secondary">
+                    <button id="reset-btn" class="btn btn-secondary" data-i18n="btn_reset">
                         <i data-lucide="refresh-cw"></i> Reset Hunt
                     </button>
-                    <div id="current-rank" class="rank-badge cold">
+                    <div id="current-rank" class="rank-badge cold" data-i18n="ready_status">
                         <i data-lucide="crosshair"></i> Ready for Hunt
                     </div>
                 </div>
@@ -178,8 +188,8 @@
             <!-- Hunt Log (Card Based) -->
             <div class="history-container">
                 <div class="history-header">
-                    <span style="flex: 1">Hunt Log</span>
-                    <span style="width: 80px; text-align: center;">Clue Score</span>
+                    <span style="flex: 1" data-i18n="log_header">Hunt Log</span>
+                    <span style="width: 90px; text-align: center;" data-i18n="score_header">Clue Score</span>
                 </div>
                 <div id="history-body">
                     <!-- Cards populated here -->
@@ -193,26 +203,29 @@
                 </p>
                 <div style="font-size: 0.6rem; letter-spacing: 1px;">
                     <a href="privacy.html"
-                        style="color: var(--text-secondary); text-decoration: none; border-bottom: 1px solid var(--border-color); padding-bottom: 2px;">PRIVACY
+                        style="color: var(--text-secondary); text-decoration: none; border-bottom: 1px solid var(--border-color); padding-bottom: 2px;"
+                        data-i18n="privacy_link">PRIVACY
                         POLICY</a>
                 </div>
             </footer>
         </main>
 
         <!-- Global Server Intelligence Hub (Right Sidebar) -->
-        <aside id="server-stats" class="server-drawer">
+        <aside class="server-drawer">
             <div class="analyzer-header">
-                <h3 class="category-label"><i data-lucide="globe"></i> Adventurer Network</h3>
-                <p class="subtitle" style="font-size: 0.7rem;">Shared knowledge from hunters across the world</p>
+                <h3 class="category-label" data-i18n="network_header"><i data-lucide="globe"></i> Adventurer Network
+                </h3>
+                <p class="subtitle" style="font-size: 0.7rem;" data-i18n="network_subtitle">Shared knowledge from
+                    hunters across the world</p>
             </div>
 
             <div class="analyzer-column">
                 <!-- Global Stat Cards -->
                 <div class="stat-card">
-                    <div class="stat-icon"><i data-lucide="database"></i></div>
+                    <div class="stat-icon" style="color: var(--text-secondary);"><i data-lucide="sword"></i></div>
                     <div class="stat-info">
-                        <span class="stat-label">Total Hunts</span>
-                        <span id="global-total-games" class="stat-value">12,450</span>
+                        <span class="stat-label" data-i18n="stat_total">Total Hunts</span>
+                        <span id="global-total-games" class="stat-value">0</span>
                     </div>
                 </div>
 
@@ -220,44 +233,36 @@
                     <div class="stat-icon" style="color: var(--accent-primary);"><i data-lucide="shield-check"></i>
                     </div>
                     <div class="stat-info">
-                        <span class="stat-label">Successful Hunts</span>
-                        <span id="global-total-wins" class="stat-value">8,112</span>
+                        <span class="stat-label" data-i18n="stat_wins">Successful Hunts</span>
+                        <span id="global-total-wins" class="stat-value">0</span>
                     </div>
                 </div>
 
                 <div class="stat-card">
                     <div class="stat-icon" style="color: var(--accent-danger);"><i data-lucide="shield-alert"></i></div>
                     <div class="stat-info">
-                        <span class="stat-label">Failed Hunts</span>
-                        <span id="global-total-losses" class="stat-value">4,338</span>
+                        <span class="stat-label" data-i18n="stat_losses">Failed Hunts</span>
+                        <span id="global-total-losses" class="stat-value">0</span>
                     </div>
                 </div>
 
                 <div class="stat-card">
-                    <div class="stat-icon" style="color: #baa887;"><i data-lucide="microscope"></i></div>
+                    <div class="stat-icon" style="color: var(--text-primary);"><i data-lucide="target"></i></div>
                     <div class="stat-info">
-                        <span class="stat-label">Hunt Accuracy</span>
-                        <span id="global-avg-guesses" class="stat-value">12.4</span>
+                        <span class="stat-label" data-i18n="stat_acc">Accuracy (Guesses/Match)</span>
+                        <span id="global-total-acc" class="stat-value"><span id="global-avg-guesses">0.0</span></span>
                     </div>
                 </div>
 
-                <div style="margin-top: 20px; text-align: center;">
-                    <div class="scanning-indicator">
-                        <div class="scan-bar"></div>
-                        <span style="font-size: 0.6rem; color: var(--accent-primary); letter-spacing: 2px;">Syncing
-                            Adventurer Data...</span>
-                    </div>
-                </div>
-
-                <!-- Ad Space Placeholder v2.6 -->
-                <div class="ad-unit-container">
+                <!-- Agency Logo Placeholder v2.7 -->
+                <div class="ad-unit-container" style="margin-top: 20px;">
                     <div class="ad-spacer">
-                        <i data-lucide="info" style="width: 12px; opacity: 0.5;"></i>
-                        <span>SPONSORED CLUES</span>
+                        <i data-lucide="shield-check" style="width: 12px; opacity: 0.5;"></i>
+                        <span data-i18n="agency_label">OFFICIAL AGENCY</span>
                     </div>
                     <div class="ad-content-box">
-                        <!-- User can paste Google AdSense or other Ad scripts here -->
-                        <div class="ad-mock-text">Your Ad Space</div>
+                        <img src="Logo.png" alt="RO Guess Logo"
+                            style="max-width: 100%; max-height: 250px; object-fit: contain; filter: drop-shadow(0 0 10px rgba(255,255,255,0.1));">
                     </div>
                 </div>
             </div>
