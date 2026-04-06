@@ -496,8 +496,8 @@ function calculateSimilarity(guesses) {
 function getRank(score) {
     const t = translations[currentLang];
     if (score >= 100) return t.rank_found;
-    if (score >= 86) return t.rank_close;
-    if (score >= 61) return t.rank_strong;
+    if (score >= 60) return t.rank_close;
+    if (score >= 40) return t.rank_strong;
     if (score >= 20) return t.rank_faint;
     return t.rank_none;
 }
