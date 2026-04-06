@@ -3,7 +3,7 @@
 // Firebase Configuration — Fill in your own config from Firebase Console
 // https://console.firebase.google.com/
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getFirestore, doc, getDoc, updateDoc, increment, setDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { getFirestore, doc, getDoc, setDoc, increment } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
 const firebaseConfig = {
     apiKey: "AIzaSyCV0EQU-Qx23AUdiHnTVso0GIyUnLn_Ij8",
@@ -125,12 +125,13 @@ async function loadServerStats() {
 // Write result to Firestore on game end
 async function updateServerStats(isWin, matchGuesses) {
     try {
-        await updateDoc(STATS_DOC, {
+        // setDoc with merge:true works even if document doesn't exist yet
+        await setDoc(STATS_DOC, {
             totalGames: increment(1),
             totalWins: increment(isWin ? 1 : 0),
             totalLosses: increment(isWin ? 0 : 1),
             totalGuesses: increment(matchGuesses)
-        });
+        }, { merge: true });
         await loadServerStats(); // Refresh display
     } catch (e) {
         console.warn('Could not update server stats:', e);
